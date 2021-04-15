@@ -7,9 +7,12 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h" 
-#include "driver/ledc.h"
 #include "driver/i2s.h"
 #include "audio_example_file.h"
+#include "esp_log.h"
+
+#include "dip.h"
+#include "buzzer.h"
 
 #define SAMPLE_RATE     (16000)
 #define SAMPLE_SIZE     (2)
@@ -20,39 +23,7 @@
 #define I2S_DO_IO       (GPIO_NUM_17)
 #define I2S_DI_IO       (-1)
 
-void sound(int gpio_num, uint32_t freq, uint32_t duration) {
-  ledc_timer_config_t timer_conf = {
-    .speed_mode = LEDC_HIGH_SPEED_MODE,
-    .bit_num = LEDC_TIMER_10_BIT,
-    .timer_num = LEDC_TIMER_0,
-    .freq_hz = freq,
-  };
-
-  ledc_timer_config(&timer_conf);
-
-  ledc_channel_config_t ledc_conf = {
-    .gpio_num = gpio_num,
-    .speed_mode = LEDC_HIGH_SPEED_MODE,
-    .channel = LEDC_CHANNEL_0,
-    .intr_type = LEDC_INTR_DISABLE,
-    .timer_sel = LEDC_TIMER_0,
-    .duty = 0x0,
-  };
-
-  ledc_channel_config(&ledc_conf);
-
-  ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, 0x7f);
-  ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
-  vTaskDelay(duration / portTICK_PERIOD_MS);
-
-  ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, 0);
-  ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
-}
-
-void load_registers(spi_transaction_t *t) {
-  gpio_set_level(GPIO_NUM_2, 0);
-  gpio_set_level(GPIO_NUM_2, 1);
-}
+static const char* TAG = "main";
 
 void app_main(void) {
   // gpio config for dip, vibrator
@@ -64,8 +35,6 @@ void app_main(void) {
   io_conf.pull_up_en = 0;
 
   gpio_config(&io_conf);
-
-  printf("initialized\n");
 
   spi_bus_config_t dip_cfg = {
     .miso_io_num = GPIO_NUM_13,
@@ -115,62 +84,63 @@ void app_main(void) {
   i2s_driver_install(I2S_NUM, &i2s_config, 0, NULL);
   i2s_set_pin(I2S_NUM, &pin_config);
 
+  // TODO(joe): check that the board is unlocked
+
+  uint16_t state = read_state(dip_spi);
+
+  switch (state) {
+    default:
+      printf("more than one selected\n");
+  }
+
   while (1) {
-    spi_transaction_t t;
-    memset(&t, 0, sizeof(t));
-    t.length = 16;
-    t.flags = SPI_TRANS_USE_RXDATA;
-    t.user = (void *)1;
-    ret = spi_device_polling_transmit(dip_spi, &t);
-    ESP_ERROR_CHECK(ret);
-
-    printf("dip switch state %x\n", *(uint32_t*)t.rx_data);
+    vTaskDelay(1000 / portTICK_RATE_MS);
     // turn vibrator on
-    gpio_set_level(GPIO_NUM_5, 1);
-    vTaskDelay(1000 / portTICK_RATE_MS);
-    // turn vibrator off
-    gpio_set_level(GPIO_NUM_5, 0);
-    vTaskDelay(1000 / portTICK_RATE_MS);
+    //gpio_set_level(GPIO_NUM_5, 1);
+    //vTaskDelay(1000 / portTICK_RATE_MS);
+    //// turn vibrator off
+    //gpio_set_level(GPIO_NUM_5, 0);
+    //vTaskDelay(1000 / portTICK_RATE_MS);
 
-    // turn fan on
-    gpio_set_level(GPIO_NUM_21, 1);
-    vTaskDelay(1000 / portTICK_RATE_MS);
-    // turn fan off
-    gpio_set_level(GPIO_NUM_21, 0);
-    vTaskDelay(1000 / portTICK_RATE_MS);
+    //// turn fan on
+    //gpio_set_level(GPIO_NUM_21, 1);
+    //vTaskDelay(1000 / portTICK_RATE_MS);
+    //// turn fan off
+    //gpio_set_level(GPIO_NUM_21, 0);
+    //vTaskDelay(1000 / portTICK_RATE_MS);
 
-    sound(GPIO_NUM_4, 660, 100);
-    vTaskDelay(150 / portTICK_RATE_MS);
+    //sound(GPIO_NUM_4, 660, 100);
+    //vTaskDelay(150 / portTICK_RATE_MS);
 
-    sound(GPIO_NUM_4, 670, 100);
-    vTaskDelay(150 / portTICK_RATE_MS);
+    //sound(GPIO_NUM_4, 670, 100);
+    //vTaskDelay(150 / portTICK_RATE_MS);
 
-    sound(GPIO_NUM_4, 680, 100);
-    vTaskDelay(150 / portTICK_RATE_MS);
+    //sound(GPIO_NUM_4, 680, 100);
+    //vTaskDelay(150 / portTICK_RATE_MS);
 
-    sound(GPIO_NUM_4, 670, 100);
-    vTaskDelay(150 / portTICK_RATE_MS);
+    //sound(GPIO_NUM_4, 670, 100);
+    //vTaskDelay(150 / portTICK_RATE_MS);
 
-    sound(GPIO_NUM_4, 660, 100);
-    vTaskDelay(150 / portTICK_RATE_MS);
+    //sound(GPIO_NUM_4, 660, 100);
+    //vTaskDelay(150 / portTICK_RATE_MS);
 
-    // turn on max98375a
-    gpio_set_level(GPIO_NUM_16, 1);
+    //// turn on max98375a
+    //gpio_set_level(GPIO_NUM_16, 1);
 
-    int offset = 0;
-    int tot_size = sizeof(audio_table);
-    size_t bytes_written = 0;
-    i2s_set_clk(0, SAMPLE_RATE, SAMPLE_BITS, 1);
-    while (offset < tot_size) {
-        printf("%d / %d\n", offset, tot_size);
-        int play_len = ((tot_size - offset) > (4 * 1024)) ? (4 * 1024) : (tot_size - offset);
-        // pointer arithmetic is weird so it's audio_table + offset in samples rather than bytes
-        i2s_write(0, audio_table+(offset / SAMPLE_SIZE), play_len, &bytes_written, portMAX_DELAY);
-        offset += bytes_written;
-    }
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    // turn on max98375a
-    gpio_set_level(GPIO_NUM_16, 0);
-    i2s_set_clk(0, SAMPLE_RATE, SAMPLE_BITS, 2);
+    //int offset = 0;
+    //int tot_size = sizeof(audio_table);
+    //size_t bytes_written = 0;
+    //i2s_set_clk(0, SAMPLE_RATE, SAMPLE_BITS, 1);
+    //while (offset < tot_size) {
+    //    printf("%d / %d\n", offset, tot_size);
+    //    int play_len = ((tot_size - offset) > (4 * 1024)) ? (4 * 1024) : (tot_size - offset);
+    //    // pointer arithmetic is weird so it's audio_table + offset in samples rather than bytes
+    //    i2s_write(0, audio_table+(offset / SAMPLE_SIZE), play_len, &bytes_written, portMAX_DELAY);
+    //    offset += bytes_written;
+    //}
+    //vTaskDelay(100 / portTICK_PERIOD_MS);
+    //// turn on max98375a
+    //gpio_set_level(GPIO_NUM_16, 0);
+    //i2s_set_clk(0, SAMPLE_RATE, SAMPLE_BITS, 2);
   }
 }
