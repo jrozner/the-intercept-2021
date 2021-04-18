@@ -22,7 +22,9 @@
 #define BUZZER_PIN (GPIO_NUM_4)
 #define FAN_PIN (GPIO_NUM_21)
 
-// DIP Latch
+// DIP
 #define LATCH_PIN (GPIO_NUM_2)
+#define DIP_MISO (GPIO_NUM_13)
+#define DIP_SCLK (GPIO_NUM_15)
 
 #endif //THEINTERCEPT_PINS_H
