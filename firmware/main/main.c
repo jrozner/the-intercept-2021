@@ -23,6 +23,37 @@
 
 static const char *TAG = "main";
 
+void startup_animation() {
+    for (int i = 0; i < 2; i++) {
+        gpio_set_level(VIBRATOR_PIN, 1);
+        gpio_set_level(RED_LED_PIN, 0);
+        vTaskDelay(250 / portTICK_RATE_MS);
+        gpio_set_level(BLUE_LED_PIN, 0);
+        vTaskDelay(250 / portTICK_RATE_MS);
+        gpio_set_level(RED_LED_PIN, 1);
+        gpio_set_level(GREEN_LED_PIN, 0);
+        gpio_set_level(VIBRATOR_PIN, 0);
+        vTaskDelay(250 / portTICK_RATE_MS);
+        gpio_set_level(BLUE_LED_PIN, 1);
+        vTaskDelay(250 / portTICK_RATE_MS);
+        gpio_set_level(GREEN_LED_PIN, 1);
+    }
+
+    sound(BUZZER_PIN, 440, 100);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    sound(BUZZER_PIN, 493, 100);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    sound(BUZZER_PIN, 523, 100);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    sound(BUZZER_PIN, 587, 100);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    sound(BUZZER_PIN, 659, 100);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    sound(BUZZER_PIN, 698, 100);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    sound(BUZZER_PIN, 783, 100);
+}
+
 void app_main(void) {
   // gpio config for all output pins
   gpio_config_t io_conf = {
@@ -94,6 +125,8 @@ void app_main(void) {
   i2s_driver_install(I2S_NUM, &i2s_config, 0, NULL);
   i2s_set_pin(I2S_NUM, &pin_config);
 
+  startup_animation();
+
   // TODO(joe): check that the board is unlocked
 
   uint16_t state = read_state(dip_spi);
@@ -103,37 +136,8 @@ void app_main(void) {
       printf("more than one selected\n");
   }
 
-  while (1) {
-    vTaskDelay(1000 / portTICK_RATE_MS);
-    // turn vibrator on
-    //gpio_set_level(GPIO_NUM_5, 1);
-    //vTaskDelay(1000 / portTICK_RATE_MS);
-    //// turn vibrator off
-    //gpio_set_level(GPIO_NUM_5, 0);
-    //vTaskDelay(1000 / portTICK_RATE_MS);
-
-    //// turn fan on
-    //gpio_set_level(GPIO_NUM_21, 1);
-    //vTaskDelay(1000 / portTICK_RATE_MS);
-    //// turn fan off
-    //gpio_set_level(GPIO_NUM_21, 0);
-    //vTaskDelay(1000 / portTICK_RATE_MS);
-
-    //sound(GPIO_NUM_4, 660, 100);
-    //vTaskDelay(150 / portTICK_RATE_MS);
-
-    //sound(GPIO_NUM_4, 670, 100);
-    //vTaskDelay(150 / portTICK_RATE_MS);
-
-    //sound(GPIO_NUM_4, 680, 100);
-    //vTaskDelay(150 / portTICK_RATE_MS);
-
-    //sound(GPIO_NUM_4, 670, 100);
-    //vTaskDelay(150 / portTICK_RATE_MS);
-
-    //sound(GPIO_NUM_4, 660, 100);
-    //vTaskDelay(150 / portTICK_RATE_MS);
-
+    while (1) {
+        vTaskDelay(250 / portTICK_RATE_MS);
     //// turn on max98375a
     //gpio_set_level(GPIO_NUM_16, 1);
 
