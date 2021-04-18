@@ -11,30 +11,40 @@
 #include "audio_example_file.h"
 #include "esp_log.h"
 
-#include "dip.h"
 #include "buzzer.h"
+#include "dip.h"
+#include "morse.h"
+#include "pins.h"
 
 #define SAMPLE_RATE     (16000)
 #define SAMPLE_SIZE     (2)
 #define SAMPLE_BITS     (SAMPLE_SIZE * 8)
 #define I2S_NUM         (0)
-#define I2S_BCK_IO      (GPIO_NUM_26)
-#define I2S_WS_IO       (GPIO_NUM_25)
-#define I2S_DO_IO       (GPIO_NUM_17)
-#define I2S_DI_IO       (-1)
 
-static const char* TAG = "main";
+static const char *TAG = "main";
 
 void app_main(void) {
-  // gpio config for dip, vibrator
-  gpio_config_t io_conf;
-  io_conf.intr_type = GPIO_INTR_DISABLE;
-  io_conf.mode = GPIO_MODE_OUTPUT;
-  io_conf.pin_bit_mask = GPIO_SEL_2 | GPIO_SEL_5 | GPIO_SEL_12 | GPIO_SEL_14 | GPIO_SEL_17 | GPIO_SEL_16 | GPIO_SEL_21 | GPIO_SEL_27 | GPIO_SEL_32 | GPIO_SEL_33;
-  io_conf.pull_down_en = 0;
-  io_conf.pull_up_en = 0;
+  // gpio config for all output pins
+  gpio_config_t io_conf = {
+    .intr_type = GPIO_INTR_DISABLE,
+    .mode = GPIO_MODE_OUTPUT,
+    .pin_bit_mask = GPIO_SEL_2 | GPIO_SEL_4 | GPIO_SEL_5 | GPIO_SEL_12 | GPIO_SEL_14 | GPIO_SEL_16 | GPIO_SEL_21 | GPIO_SEL_27 | GPIO_SEL_32 | GPIO_SEL_33,
+    .pull_down_en = 0,
+    .pull_up_en = 0,
+  };
 
   gpio_config(&io_conf);
+
+  // turn off everything
+  gpio_set_level(FAN_PIN, 0);
+  gpio_set_level(BUZZER_PIN, 0);
+  gpio_set_level(VIBRATOR_PIN, 0);
+  gpio_set_level(UV_LED_PIN, 1);
+  gpio_set_level(IR_LED_PIN, 1);
+  gpio_set_level(GREEN_LED_PIN, 1);
+  gpio_set_level(BLUE_LED_PIN, 1);
+  gpio_set_level(RED_LED_PIN, 1);
+  gpio_set_level(I2S_AIO_PIN, 0);
 
   spi_bus_config_t dip_cfg = {
     .miso_io_num = GPIO_NUM_13,
@@ -63,22 +73,22 @@ void app_main(void) {
   ESP_ERROR_CHECK(ret);
 
   i2s_config_t i2s_config = {
-    .mode = I2S_MODE_MASTER | I2S_MODE_TX,                                  // Only TX
+    .mode = I2S_MODE_MASTER | I2S_MODE_TX,
     .sample_rate = SAMPLE_RATE,
     .bits_per_sample = SAMPLE_BITS,
-    .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,                           //2-channels
+    .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
     .communication_format = I2S_COMM_FORMAT_STAND_I2S,
     .dma_buf_count = 8,
     .dma_buf_len = 64,
     .use_apll = false,
-    .intr_alloc_flags = 0                                //Interrupt level 1
+    .intr_alloc_flags = 0,
   };
 
   i2s_pin_config_t pin_config = {
-    .bck_io_num = I2S_BCK_IO,
-    .ws_io_num = I2S_WS_IO,
-    .data_out_num = I2S_DO_IO,
-    .data_in_num = I2S_DI_IO                                               //Not used
+    .bck_io_num = I2S_BCK_PIN,
+    .ws_io_num = I2S_WS_PIN,
+    .data_out_num = I2S_DO_PIN,
+    .data_in_num = I2S_DI_PIN,
   };
 
   i2s_driver_install(I2S_NUM, &i2s_config, 0, NULL);

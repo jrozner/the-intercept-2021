@@ -1,5 +1,5 @@
-#ifndef DIP_H
-#define DIP_H
+#ifndef THEINTERCEPT_DIP_H
+#define THEINTERCEPT_DIP_H
 
 #define DIP0 (1 << 7)
 #define DIP1 (1 << 6)
@@ -15,4 +15,4 @@
 uint16_t read_state(spi_device_handle_t);
 void load_registers(spi_transaction_t *t);
 
-#endif
+#endif //THEINTERCEPT_DIP_H
