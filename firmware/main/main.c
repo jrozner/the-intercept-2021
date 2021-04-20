@@ -10,7 +10,10 @@
 #include "driver/i2s.h"
 #include "audio_example_file.h"
 #include "esp_log.h"
+#include "nvs.h"
+#include "nvs_flash.h"
 
+#include "animation.h"
 #include "audio.h"
 #include "buzzer.h"
 #include "dip.h"
@@ -18,37 +21,6 @@
 #include "pins.h"
 
 static const char *TAG = "main";
-
-void startup_animation() {
-    for (int i = 0; i < 2; i++) {
-        gpio_set_level(VIBRATOR_PIN, 1);
-        gpio_set_level(RED_LED_PIN, 0);
-        vTaskDelay(250 / portTICK_RATE_MS);
-        gpio_set_level(BLUE_LED_PIN, 0);
-        vTaskDelay(250 / portTICK_RATE_MS);
-        gpio_set_level(RED_LED_PIN, 1);
-        gpio_set_level(GREEN_LED_PIN, 0);
-        gpio_set_level(VIBRATOR_PIN, 0);
-        vTaskDelay(250 / portTICK_RATE_MS);
-        gpio_set_level(BLUE_LED_PIN, 1);
-        vTaskDelay(250 / portTICK_RATE_MS);
-        gpio_set_level(GREEN_LED_PIN, 1);
-    }
-
-    sound(BUZZER_PIN, 440, 100);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    sound(BUZZER_PIN, 493, 100);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    sound(BUZZER_PIN, 523, 100);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    sound(BUZZER_PIN, 587, 100);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    sound(BUZZER_PIN, 659, 100);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    sound(BUZZER_PIN, 698, 100);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    sound(BUZZER_PIN, 783, 100);
-}
 
 void app_main(void) {
     // gpio config for all output pins
@@ -122,13 +94,60 @@ void app_main(void) {
     i2s_driver_install(I2S_NUM, &i2s_config, 0, NULL);
     i2s_set_pin(I2S_NUM, &pin_config);
 
+    printf("before startup\n");
     startup_animation();
+    printf("after startup\n");
 
-    // TODO(joe): check that the board is unlocked
+    esp_err_t err = nvs_flash_init();
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        printf("erasing\n");
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(err);
+
+    nvs_handle_t nvs_handle;
+    err = nvs_open("storage", NVS_READWRITE, &nvs_handle);
+    ESP_ERROR_CHECK(err);
 
     uint16_t state = read_state(dip_spi);
 
+    uint8_t initialized = 0;
+    err = nvs_get_u8(nvs_handle, "initialized", &initialized);
+    switch (err) {
+        case ESP_OK:
+            break;
+        case ESP_ERR_NVS_NOT_FOUND:
+            if (state == UNLOCK_CODE) {
+                err = nvs_set_u8(nvs_handle, "initialized", 1);
+                // TODO(joe): we probably want some better error handling in case this fails
+                ESP_ERROR_CHECK(err);
+
+                while (true) {
+                    unlock_animation();
+                    vTaskDelay(1000 / portTICK_RATE_MS);
+                }
+            } else {
+                while (true) {
+                    locked_animation();
+                    vTaskDelay(1000 / portTICK_RATE_MS);
+                }
+            }
+            break;
+        default:
+            while (true) {
+                error_animation();
+                vTaskDelay(1000 / portTICK_RATE_MS);
+            }
+            // TODO(joe): do some real error handling here
+    }
+
+    nvs_close(nvs_handle);
+
     switch (state) {
+        case UNLOCK_CODE:
+            // TODO(joe): play unlock animation
+            break;
         default:
             printf("more than one selected\n");
     }
