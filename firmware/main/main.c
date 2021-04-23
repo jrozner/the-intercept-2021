@@ -151,6 +151,9 @@ void app_main(void) {
         case CODE_BUZZER_MORSE:
             challenge_buzzer_morse();
             break;
+        case CODE_BUZZER_ADVANCED_MORSE:
+            challenge_buzzer_advanced_morse();
+            break;
         default:
             while(true)
             {

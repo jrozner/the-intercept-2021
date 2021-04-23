@@ -8,247 +8,69 @@
 
 const char *TAG = "morse";
 
-void morse_buzzer(char *input) {
+const char *morseLetter[256] = {0};
+
+void morse_buzzer(char *input, float speed) {
+
+    morseLetter['a'] = ".-";
+    morseLetter['b'] = "-...";
+    morseLetter['c'] = "-.-.";
+    morseLetter['d'] = "-..";
+    morseLetter['e'] = ".";
+    morseLetter['f'] = "..-.";
+    morseLetter['g'] = "--.";
+    morseLetter['h'] = "....";
+    morseLetter['i'] = "..";
+    morseLetter['j'] = ".---";
+    morseLetter['k'] = "-.-";
+    morseLetter['l'] = ".-..";
+    morseLetter['m'] = "--";
+    morseLetter['n'] = "-.";
+    morseLetter['o'] = "---";
+    morseLetter['p'] = ".--.";
+    morseLetter['q'] = "--.-";
+    morseLetter['r'] = ".-.";
+    morseLetter['s'] = "...";
+    morseLetter['t'] = "-";
+    morseLetter['u'] = "..-";
+    morseLetter['v'] = "...-";
+    morseLetter['w'] = ".--";
+    morseLetter['x'] = "-..-";
+    morseLetter['y'] = "-.--";
+    morseLetter['z'] = "--..";
+
+    morseLetter['1'] = ".----";
+    morseLetter['2'] = "..---";
+    morseLetter['3'] = "...--";
+    morseLetter['4'] = "....-";
+    morseLetter['5'] = ".....";
+    morseLetter['6'] = "-...";
+    morseLetter['7'] = "--...";
+    morseLetter['8'] = "---..";
+    morseLetter['9'] = "----.";
+    morseLetter['0'] = "-----";
+
+    morseLetter[' '] = " ";
+
     for (char *c = input; *c != 0; c++) {
-        switch (*c) {
-            case 'A':
-            case 'a':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'B':
-            case 'b':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'C':
-            case 'c':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'D':
-            case 'd':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'E':
-            case 'e':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'F':
-            case 'f':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'G':
-            case 'g':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'H':
-            case 'h':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'I':
-            case 'i':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'J':
-            case 'j':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'K':
-            case 'k':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'L':
-            case 'l':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'M':
-            case 'm':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'N':
-            case 'n':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'O':
-            case 'o':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'P':
-            case 'p':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'Q':
-            case 'q':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'R':
-            case 'r':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'S':
-            case 's':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case 'T':
-            case 't':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'U':
-            case 'u':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'V':
-            case 'v':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'W':
-            case 'w':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'X':
-            case 'x':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'Y':
-            case 'y':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case 'Z':
-            case 'z':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case '1':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case '2':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case '3':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case '4':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case '5':
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case '6':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case '7':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case '8':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case '9':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH);
-                break;
-            case '0':
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
-                break;
-            case ' ':
-                vTaskDelay(SEPARATOR_LENGTH * 4 / portTICK_RATE_MS);
-                break;
-            default:
-                ESP_LOGE(TAG, "unsupported character");
+        
+        const char *morseSeq = morseLetter[(int)*c];
+       
+        if (morseSeq)
+        {
+            for (const char *i = morseSeq; *i != 0; i++)
+            {
+                char symbol = *i;
+                if ((symbol >= 'A') && (symbol <= 'Z')) symbol += 'a' - 'A';
+
+                if (symbol == '.') sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH * speed);
+                else if (symbol == '-') sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH * 3 * speed);
+                else if (symbol == ' ') vTaskDelay(SHORT_LENGTH * 8 * speed / portTICK_RATE_MS);
+
+                vTaskDelay(SHORT_LENGTH * speed / portTICK_RATE_MS);
+            }
         }
 
-        vTaskDelay(SEPARATOR_LENGTH / portTICK_RATE_MS);
+        vTaskDelay(SHORT_LENGTH * speed * 4 / portTICK_RATE_MS);
     }
 }

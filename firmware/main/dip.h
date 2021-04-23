@@ -12,14 +12,11 @@
 #define DIP9 (1 << 15)
 #define DIP10 (1 << 14)
 
-#define UNLOCK_CODE (DIP1 | DIP5 | DIP6 | DIP8 | DIP10)
-
-#define CODE1 0b0000000001
-
 #define DIP_CODE(code) (((code & 0b11) << 14) | (code >> 2))
 
-#define CODE_UNLOCK             (DIP_CODE(951))
-#define CODE_BUZZER_MORSE       (DIP_CODE(420))
+#define CODE_UNLOCK                      (DIP_CODE(951))
+#define CODE_BUZZER_MORSE                (DIP_CODE(420))
+#define CODE_BUZZER_ADVANCED_MORSE       (DIP_CODE(360))
 
 uint16_t read_state(spi_device_handle_t);
 void load_registers(spi_transaction_t *t);
