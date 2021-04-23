@@ -8,7 +8,6 @@
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include "driver/i2s.h"
-#include "audio_example_file.h"
 #include "esp_log.h"
 #include "nvs.h"
 #include "nvs_flash.h"
@@ -147,6 +146,7 @@ void app_main(void) {
 
     nvs_close(nvs_handle);
 
+    play_audio();
     switch (state) {
         case CODE_BUZZER_MORSE:
             challenge_buzzer_morse();

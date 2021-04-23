@@ -6,4 +6,6 @@
 #define SAMPLE_BITS     (SAMPLE_SIZE * 8)
 #define I2S_NUM         (0)
 
+void play_audio();
+
 #endif //THEINTERCEPT_AUDIO_H
