@@ -10,7 +10,7 @@ const char *TAG = "morse";
 
 const char *morseLetter[256] = {0};
 
-void morse_buzzer(char *input, float speed) {
+void morse_buzzer(char *input, float speed, int swing) {
 
     morseLetter['a'] = ".-";
     morseLetter['b'] = "-...";
@@ -60,11 +60,16 @@ void morse_buzzer(char *input, float speed) {
         {
             for (const char *i = morseSeq; *i != 0; i++)
             {
+                int freqSwing = 0;
+
+                if (swing > 0)
+                    freqSwing = rand() % (swing * 2) - swing;
+
                 char symbol = *i;
                 if ((symbol >= 'A') && (symbol <= 'Z')) symbol += 'a' - 'A';
 
-                if (symbol == '.') sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH * speed);
-                else if (symbol == '-') sound(BUZZER_PIN, MORSE_FREQ, SHORT_LENGTH * 3 * speed);
+                if (symbol == '.') sound(BUZZER_PIN, MORSE_FREQ + freqSwing, SHORT_LENGTH * speed);
+                else if (symbol == '-') sound(BUZZER_PIN, MORSE_FREQ + freqSwing, SHORT_LENGTH * 3 * speed);
                 else if (symbol == ' ') vTaskDelay(SHORT_LENGTH * 8 * speed / portTICK_RATE_MS);
 
                 vTaskDelay(SHORT_LENGTH * speed / portTICK_RATE_MS);

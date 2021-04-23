@@ -5,7 +5,7 @@ void challenge_buzzer_morse()
     while(true)
     {
         vTaskDelay(3000 / portTICK_RATE_MS);
-        morse_buzzer("flag is s4mu3lismyh0m3b0y", 4.0f);
+        morse_buzzer("flag is s4mu3lismyh0m3b0y", 4.0f, 0);
     }
 
 }
@@ -17,6 +17,6 @@ void challenge_buzzer_advanced_morse()
     while(true)
     {
         vTaskDelay(3000 / portTICK_RATE_MS);
-        morse_buzzer(jules, 0.5f);   
+        morse_buzzer(jules, 0.5f, 50);   
     }
 }
