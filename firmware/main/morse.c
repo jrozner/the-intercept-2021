@@ -243,6 +243,7 @@ void morse_buzzer(char *input) {
                 sound(BUZZER_PIN, MORSE_FREQ, LONG_LENGTH);
                 break;
             case ' ':
+                vTaskDelay(SEPARATOR_LENGTH * 4 / portTICK_RATE_MS);
                 break;
             default:
                 ESP_LOGE(TAG, "unsupported character");

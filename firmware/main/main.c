@@ -20,6 +20,9 @@
 #include "morse.h"
 #include "pins.h"
 
+#include "challenges_jk.c"
+
+
 static const char *TAG = "main";
 
 void app_main(void) {
@@ -118,7 +121,7 @@ void app_main(void) {
         case ESP_OK:
             break;
         case ESP_ERR_NVS_NOT_FOUND:
-            if (state == UNLOCK_CODE) {
+            if (state == CODE_UNLOCK) {
                 err = nvs_set_u8(nvs_handle, "initialized", 1);
                 // TODO(joe): we probably want some better error handling in case this fails
                 ESP_ERROR_CHECK(err);
@@ -145,11 +148,15 @@ void app_main(void) {
     nvs_close(nvs_handle);
 
     switch (state) {
-        case UNLOCK_CODE:
-            // TODO(joe): play unlock animation
+        case CODE_BUZZER_MORSE:
+            challenge_buzzer_morse();
             break;
         default:
-            printf("more than one selected\n");
+            while(true)
+            {
+                error_animation();
+                vTaskDelay(1000 / portTICK_RATE_MS);
+            }            
     }
 
     while (1) {
