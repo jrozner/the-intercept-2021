@@ -16,10 +16,12 @@
 #include "audio.h"
 #include "buzzer.h"
 #include "dip.h"
+#include "led.h"
 #include "morse.h"
 #include "pins.h"
 
 #include "challenges_jk.c"
+#include "challenges_dg.c"
 
 
 static const char *TAG = "main";
@@ -153,6 +155,9 @@ void app_main(void) {
             break;
         case CODE_BUZZER_ADVANCED_MORSE:
             challenge_buzzer_advanced_morse();
+            break;
+        case CODE_LED_IMG_BINARY:
+            led_solo_binary(data_solo_binary);
             break;
         default:
             while(true)
