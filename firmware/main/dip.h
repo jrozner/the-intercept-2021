@@ -23,7 +23,7 @@
 #define CODE_LED_IMG_BINARY              (DIP_CODE(164))
 #define CODE_LED_IMG_REDVAR              (DIP_CODE(864))
 #define CODE_LED_IMG_RGB                 (DIP_CODE(537))
-#define CODE_LED_IMG_RGBVAR              (DIP_CODE(537))
+#define CODE_LED_IMG_RGBVAR              (DIP_CODE(735))
 #define CODE_LED_UV                      (DIP_CODE(1001))
 #define CODE_LED_IR                      (DIP_CODE(1023))
 #define CODE_LED_BRAILLE                 (DIP_CODE(333))
