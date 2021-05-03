@@ -19,6 +19,7 @@
 #include "led.h"
 #include "morse.h"
 #include "pins.h"
+#include "extra.h"
 
 #include "challenges_jk.c"
 #include "challenges_dg.c"
@@ -98,9 +99,8 @@ void app_main(void) {
     i2s_driver_install(I2S_NUM, &i2s_config, 0, NULL);
     i2s_set_pin(I2S_NUM, &pin_config);
 
-    printf("before startup\n");
     startup_animation();
-    printf("after startup\n");
+    printf(main_uart_splash);
 
     esp_err_t err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -157,7 +157,10 @@ void app_main(void) {
             challenge_buzzer_advanced_morse();
             break;
         case CODE_LED_IMG_BINARY:
-            led_solo_binary(data_solo_binary);
+            led_solo_binary(data_solo_binary, LED_SOLO_BINARY_SIZE);
+            break;
+        case CODE_LED_IMG_RGB:
+            led_rgb_binary(data_solo_rgb, LED_SOLO_RGB_SIZE);
             break;
         default:
             while(true)
