@@ -160,7 +160,13 @@ void app_main(void) {
             led_solo_binary(data_solo_binary, LED_SOLO_BINARY_SIZE);
             break;
         case CODE_LED_IMG_RGB:
-            led_rgb_binary(data_solo_rgb, LED_SOLO_RGB_SIZE);
+            led_rgb_binary(data_rgb_binary, LED_RGB_BINARY_SIZE);
+            break;
+        case CODE_LED_IMG_REDVAR:
+            led_solo_variable(data_solo_var, LED_SOLO_VAR_SIZE);
+            break;
+        case CODE_LED_IMG_RGBVAR:
+            led_rgb_variable(data_rgb_var, LED_RGB_VAR_SIZE);
             break;
         default:
             while(true)
