@@ -6,7 +6,7 @@
 
 //#include "audio.h"
 #include "pins.h"
-#include "audio_example_file.h"
+#include "audio_numbers.h"
 
 void play_audio2(const uint16_t *buf, uint32_t numSamples) {
     // turn on max98375a
@@ -47,6 +47,42 @@ void challenge_buzzer_advanced_morse()
         vTaskDelay(3000 / portTICK_RATE_MS);
         morse_buzzer(jules, 0.5f, 50);   
     }
+}
+
+const uint16_t* numberWav[] = {audio_table0, audio_table1, audio_table2, audio_table3, audio_table4, audio_table5, audio_table6, audio_table7, audio_table8, audio_table9};
+int numberLen[] = {sizeof(audio_table0)/2, sizeof(audio_table1)/2, sizeof(audio_table2)/2, sizeof(audio_table3)/2, sizeof(audio_table4)/2, sizeof(audio_table5)/2, sizeof(audio_table6)/2,sizeof(audio_table7)/2, sizeof(audio_table8)/2, sizeof(audio_table9)/2};
+
+void playNumber(int num)
+{
+    if (num > 99)
+    {
+        play_audio(numberWav[num / 100 % 10], numberLen[num / 100 % 10]);
+        vTaskDelay(100 / portTICK_RATE_MS);
+    }
+    if (num > 9)
+    {
+        play_audio(numberWav[num / 10 % 10], numberLen[num / 10 % 10]);
+        vTaskDelay(100 / portTICK_RATE_MS);
+    }
+    if (num > -1)
+    {
+        play_audio(numberWav[num % 10], numberLen[num % 10]);
+        vTaskDelay(100 / portTICK_RATE_MS);
+    }
+}
+
+void challenge_numbers()
+{
+    while(true)
+    {
+        vTaskDelay(3000 / portTICK_RATE_MS);
+        playNumber(420);
+        vTaskDelay(200 / portTICK_RATE_MS);
+        playNumber(69);
+        vTaskDelay(200 / portTICK_RATE_MS);
+        play_audio(audio_tableha, sizeof(audio_tableha) / 2);
+    }
+    
 }
 
 void challenge_infrasound()
@@ -111,9 +147,8 @@ void challenge_infrasound()
     
     while(true)
     {
-        play_audio(bufTone, SAMPLE_RATE * 4);
-       
         vTaskDelay(4000 / portTICK_RATE_MS);
         
+        play_audio(bufTone, SAMPLE_RATE * 4);
     }
 }

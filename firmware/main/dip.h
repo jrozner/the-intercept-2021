@@ -20,6 +20,7 @@
 #define CODE_BUZZER_MORSE                (DIP_CODE(420))  // 0110100100
 #define CODE_BUZZER_ADVANCED_MORSE       (DIP_CODE(360))  // 0101101000
 #define CODE_INFRASOUND                  (DIP_CODE(831))  // 1100111111
+#define CODE_NUMBERS                     (DIP_CODE(833))
 
 #define CODE_LED_IMG_BINARY              (DIP_CODE(164))  // 0010100100
 #define CODE_LED_IMG_REDVAR              (DIP_CODE(864))  // 1101100000

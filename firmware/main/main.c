@@ -158,6 +158,9 @@ void app_main(void) {
         case CODE_INFRASOUND:
             challenge_infrasound();
             break;
+        case CODE_NUMBERS:
+            challenge_numbers();
+            break;
         case CODE_LED_IMG_BINARY:
             led_solo_binary(data_solo_binary, LED_SOLO_BINARY_SIZE);
             break;
