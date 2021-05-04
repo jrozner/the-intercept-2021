@@ -16,20 +16,19 @@
 
 #define DIP_CODE(code) (((code & 0b11) << 14) | (code >> 2))
 
-#define CODE_UNLOCK                      (DIP_CODE(951))
-#define CODE_BUZZER_MORSE                (DIP_CODE(420))
-#define CODE_BUZZER_ADVANCED_MORSE       (DIP_CODE(360))
-#define CODE_INFRASOUND                  (DIP_CODE(831))
+#define CODE_UNLOCK                      (DIP_CODE(951))  // 1110110111
+#define CODE_BUZZER_MORSE                (DIP_CODE(420))  // 0110100100
+#define CODE_BUZZER_ADVANCED_MORSE       (DIP_CODE(360))  // 0101101000
+#define CODE_INFRASOUND                  (DIP_CODE(831))  // 1100111111
 
-#define CODE_LED_IMG_BINARY              (DIP_CODE(164))
-#define CODE_LED_IMG_REDVAR              (DIP_CODE(864))
-#define CODE_LED_IMG_RGB                 (DIP_CODE(537))
-#define CODE_LED_IMG_RGBVAR              (DIP_CODE(537))
-#define CODE_LED_UV                      (DIP_CODE(1001))
-#define CODE_LED_IR                      (DIP_CODE(1023))
-#define CODE_LED_BRAILLE                 (DIP_CODE(333))
-#define CODE_LED_POV                     (DIP_CODE(42))
-
+#define CODE_LED_IMG_BINARY              (DIP_CODE(164))  // 0010100100
+#define CODE_LED_IMG_REDVAR              (DIP_CODE(864))  // 1101100000
+#define CODE_LED_IMG_RGB                 (DIP_CODE(537))  // 1000011001
+#define CODE_LED_IMG_RGBVAR              (DIP_CODE(735))  // 1011011111
+#define CODE_LED_UV                      (DIP_CODE(1001)) // 1111101001
+#define CODE_LED_IR                      (DIP_CODE(1023)) // 1111111111
+#define CODE_LED_BRAILLE                 (DIP_CODE(333))  // 0101001101
+#define CODE_LED_POV                     (DIP_CODE(42))   // 0000101010
 
 uint16_t read_state(spi_device_handle_t);
 void load_registers(spi_transaction_t *t);

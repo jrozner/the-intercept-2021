@@ -1,0 +1,8 @@
+#ifndef THEINTERCEPT_EXTRA_H
+#define THEINTERCEPT_EXTRA_H
+
+// main uart flag
+
+char main_uart_splash[]= "\n                               .......\n                          ..:::oo:::oo:::..\n                        .::oo:::::::::.:.oo:.\n                      .:oo::::::::::.:...:.oo:.\n                    .:o:o::::::::::::.. ..:.:oo:.\n                   .:oo:::::::::::::.:...:.::::oo.\n                  ::oo::::::::::::::::.:.::::::oo::\n                  :::::::::::::::::::::::::::::::::\no.o.o.o.o.o.o.o.o.88oooooooooooooooooooooooooooo8888.o.o.o.o.o.o.o.o.o.\n..ooo..:.:.oo888''..oo..oo..oo..oo|..oo..oo..oo..oo ``oo..oo..oo..oo..o\n==8888888888888888'...ooo...ooo...|ooo...ooo...ooo'8888oooo88888ooooo88\n................oO8:oo..oo....oooo|....oooo..oo..::8888888888888888888-\n8888888888888O''    :..oooo.......|ooooooo....ooooooooooo.\n''''''''''O:.........:...ooooooooo|.........ooo'8888888888:............\n     .oo8888888888888/''.....ooooo|.....ooooo'8`o             `O8888888\n .oo8888888888888888/    '........|oooooooo'88888o                `O888\no88888888888888888/'        '''...|OOOO''888888888O.                 `8\n'''''''''''''''''oooooooooooooooooo'''''''''''''''''''ooooooooooooooooo\n              ./8888888888888888888 You really should `\\888888888888888\n            ./88JJJ8W888W8888888888  not be here <_<    `\\8888888888888\n          ./888888J8W8W8W8888888888                       `\\88888888888\n         /888888J8J8W8W8W8888888888 use at your own risk:   \\8888888888\n       ./8888888JJJ88W8W88888888888  flag{ep0xy_B3_d4mn3d}   `\\88888888\n      /8888888888888888888888888888                            `\\888888\n\n";
+
+#endif //THEINTERCEPT_EXTRA_H
