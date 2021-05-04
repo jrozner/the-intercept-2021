@@ -1,10 +1,28 @@
 #include <stdint.h>
 #include "driver/ledc.h"
 
-void led_rgb_variable(uint32_t *input, uint32_t size) {
+void led_uv(const uint8_t *input, uint32_t size) {
+    uint32_t i;
+
+    while (true) {
+        for(i=0; i<size; i++) {
+            // blip for 30 millis
+            gpio_set_level(UV_LED_PIN, 0);
+            vTaskDelay(30 / portTICK_PERIOD_MS);
+            gpio_set_level(UV_LED_PIN, 1);
+
+            // delay next blip by flag char * 30 millis
+            vTaskDelay((30 * input[i]) / portTICK_PERIOD_MS);
+        }
+        led_blink(RED_LED_PIN);
+    }
+}
+
+void led_rgb_variable(const uint32_t *input, uint32_t size) {
 
     uint32_t freq = 5000;
-    int i;
+    uint32_t i;
+    uint8_t r,g,b;
 
     ledc_timer_config_t timer_conf = {
          .speed_mode = LEDC_HIGH_SPEED_MODE,
@@ -60,8 +78,6 @@ void led_rgb_variable(uint32_t *input, uint32_t size) {
     };
     ledc_channel_config(&ledc_conf3);
 
-    uint8_t r,g,b;
-
     while (true) {
         for (i=0; i<size; i++) {
             r = (input[i] >>16) & 0xff;
@@ -77,22 +93,14 @@ void led_rgb_variable(uint32_t *input, uint32_t size) {
             ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3, b);
             ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
 
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(20 / portTICK_PERIOD_MS);
 
         }
-        // blink UV between repeats
-        gpio_set_level(RED_LED_PIN, 1);
-        gpio_set_level(GREEN_LED_PIN, 1);
-        gpio_set_level(BLUE_LED_PIN, 1);
-        for (i=0; i!=0; i--) {
-            gpio_set_level(UV_LED_PIN, i%2);
-            vTaskDelay(500 / portTICK_RATE_MS);
-        }
-        gpio_set_level(UV_LED_PIN, 1);
+        led_blink(UV_LED_PIN);
     }
 }
 
-void led_solo_variable(uint8_t *input, uint32_t size) {
+void led_solo_variable(const uint8_t *input, uint32_t size) {
 
     uint32_t freq = 5000;
     int i;
@@ -119,22 +127,14 @@ void led_solo_variable(uint8_t *input, uint32_t size) {
         for (i=0; i<size; i++) {
             ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1, input[i]);
             ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1);
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(20 / portTICK_PERIOD_MS);
 
         }
-        // blink UV between repeats
-        gpio_set_level(RED_LED_PIN, 1);
-        gpio_set_level(GREEN_LED_PIN, 1);
-        gpio_set_level(BLUE_LED_PIN, 1);
-        for (i=0; i!=0; i--) {
-            gpio_set_level(UV_LED_PIN, i%2);
-            vTaskDelay(500 / portTICK_RATE_MS);
-        }
-        gpio_set_level(UV_LED_PIN, 1);
+        led_blink(UV_LED_PIN);
     }
 }
 
-void led_solo_binary(uint8_t *input, uint32_t size) {
+void led_solo_binary(const uint8_t *input, uint32_t size) {
 
     uint32_t i;
     uint8_t b, n;
@@ -145,20 +145,14 @@ void led_solo_binary(uint8_t *input, uint32_t size) {
             for (b=7; b!=0; b--) {
                 n = (input[i]>>b)&1;
                 gpio_set_level(BLUE_LED_PIN, n);
-                vTaskDelay(10 / portTICK_RATE_MS); // between bits
+                vTaskDelay(20 / portTICK_RATE_MS); // between bits
             }
         }
-        // blink red between repeats
-        gpio_set_level(BLUE_LED_PIN, 1);
-        for (b=6; b!=0; b--) {
-            gpio_set_level(RED_LED_PIN, b%2);
-            vTaskDelay(500 / portTICK_RATE_MS);
-        }
-        gpio_set_level(RED_LED_PIN, 1);
+        led_blink(UV_LED_PIN);
     }
 }
 
-void led_rgb_binary(uint32_t *input, uint32_t size) {
+void led_rgb_binary(const uint32_t *input, uint32_t size) {
     uint32_t i;
     uint8_t r,g,b;
     while(true) {
@@ -170,16 +164,23 @@ void led_rgb_binary(uint32_t *input, uint32_t size) {
             gpio_set_level(RED_LED_PIN, (r>1)?0:1);
             gpio_set_level(GREEN_LED_PIN, (g>1)?0:1);
             gpio_set_level(BLUE_LED_PIN, (b>1)?0:1);
-            vTaskDelay(10 / portTICK_RATE_MS); // between bits
+            vTaskDelay(20 / portTICK_RATE_MS); // between bits
         }
-        // blink UV between repeats
-        gpio_set_level(RED_LED_PIN, 1);
-        gpio_set_level(GREEN_LED_PIN, 1);
-        gpio_set_level(BLUE_LED_PIN, 1);
-        for (b=6; b!=0; b--) {
-            gpio_set_level(UV_LED_PIN, b%2);
-            vTaskDelay(500 / portTICK_RATE_MS);
-        }
-        gpio_set_level(UV_LED_PIN, 1);
+        led_blink(UV_LED_PIN);
     }
+}
+
+void led_blink(int32_t pin) {
+    uint8_t b;
+    // blink UV between repeats
+    gpio_set_level(RED_LED_PIN, 1);
+    gpio_set_level(GREEN_LED_PIN, 1);
+    gpio_set_level(BLUE_LED_PIN, 1);
+    gpio_set_level(UV_LED_PIN, 1);
+    gpio_set_level(IR_LED_PIN, 1);
+    for (b=6; b!=0; b--) {
+        gpio_set_level(pin, b%2);
+        vTaskDelay(500 / portTICK_RATE_MS);
+    }
+    gpio_set_level(pin, 1);
 }

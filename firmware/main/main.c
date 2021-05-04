@@ -170,6 +170,12 @@ void app_main(void) {
         case CODE_LED_IMG_RGBVAR:
             led_rgb_variable(data_rgb_var, LED_RGB_VAR_SIZE);
             break;
+        case CODE_LED_UV:
+            led_uv(data_uv, LED_UV_SIZE);
+            break;
+        case CODE_LED_IR:
+            //led_ir(NULL, 0);
+            break;
         default:
             while(true)
             {
