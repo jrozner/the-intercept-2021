@@ -177,7 +177,7 @@ void app_main(void) {
             led_uv(data_uv, LED_UV_SIZE);
             break;
         case CODE_LED_IR:
-            //led_ir(NULL, 0);
+            led_ir(NULL, LED_IR_SIZE);
             break;
         default:
             while(true)

@@ -8,6 +8,7 @@
 #define LED_SOLO_VAR_SIZE 29751
 #define LED_RGB_VAR_SIZE 27875
 #define LED_UV_SIZE 94
+#define LED_IR_SIZE 0
 
 void led_blink(int32_t pin);
 void led_solo_binary(const uint8_t *input, uint32_t size);
