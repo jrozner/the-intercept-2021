@@ -148,13 +148,15 @@ void app_main(void) {
 
     nvs_close(nvs_handle);
 
-    play_audio();
     switch (state) {
         case CODE_BUZZER_MORSE:
             challenge_buzzer_morse();
             break;
         case CODE_BUZZER_ADVANCED_MORSE:
             challenge_buzzer_advanced_morse();
+            break;
+        case CODE_INFRASOUND:
+            challenge_infrasound();
             break;
         case CODE_LED_IMG_BINARY:
             led_solo_binary(data_solo_binary);

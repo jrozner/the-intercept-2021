@@ -6,15 +6,28 @@ import struct
 
 
 def get_wave_array_str(filename):
+    highest = -1000000000
+    lowest = 1000000000
+
     wave_read = wave.open(filename, "r")
     array_str = ""
     nchannels, sampwidth, framerate, nframes, comptype, compname = wave_read.getparams()
     sampwidth *= 8
     for i in range(wave_read.getnframes()):
         val, = struct.unpack("<H", wave_read.readframes(1))
+
+        print(val)
+        if val < lowest:
+            lowest = val
+        if val > highest:
+            highest = val
         array_str += "0x%x, " % (val)
         if (i + 1) % 16 == 0:
             array_str += "\n"
+
+    print(highest)
+    print(lowest)
+
     return array_str
 
 

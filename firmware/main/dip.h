@@ -19,6 +19,7 @@
 #define CODE_UNLOCK                      (DIP_CODE(951))
 #define CODE_BUZZER_MORSE                (DIP_CODE(420))
 #define CODE_BUZZER_ADVANCED_MORSE       (DIP_CODE(360))
+#define CODE_INFRASOUND                  (DIP_CODE(831))
 
 #define CODE_LED_IMG_BINARY              (DIP_CODE(164))
 #define CODE_LED_IMG_REDVAR              (DIP_CODE(864))
