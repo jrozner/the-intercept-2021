@@ -6,44 +6,36 @@
 #include "ir_builder_rmt_nec.c"
 #include "ir_tools.h"
 
-void led_ir(const uint8_t *input, uint32_t size) {
+void led_ir(const uint32_t *input, uint32_t size) {
 
-    rmt_channel_t example_tx_channel = RMT_CHANNEL_0;
 
-    uint32_t i=0;
+    uint32_t i, addr, cmd; // big endian NIBBLE order
+    // example remote 00ff 906f vs ff00 f609
 
-    uint32_t addr = 0x00;
-    uint32_t cmd = 0x90;
+    rmt_channel_t rmt_channel0 = RMT_CHANNEL_0;
     rmt_item32_t *items = NULL;
     size_t length = 0;
     ir_builder_t *ir_builder = NULL;
 
-    rmt_config_t rmt_tx_config = RMT_DEFAULT_CONFIG_TX(IR_LED_PIN, example_tx_channel);
-
-
+    rmt_config_t rmt_tx_config = RMT_DEFAULT_CONFIG_TX(IR_LED_PIN, rmt_channel0);
+    rmt_tx_config.flags |= RMT_CHANNEL_FLAGS_INVERT_SIG;
     rmt_tx_config.tx_config.carrier_freq_hz = 38000;
-    rmt_tx_config.tx_config.carrier_level = 0;
     rmt_tx_config.tx_config.carrier_en = true;
-    rmt_tx_config.tx_config.idle_level = 1;
-    rmt_tx_config.tx_config.idle_output_en = true;
-    
     rmt_config(&rmt_tx_config);
-    rmt_driver_install(example_tx_channel, 0, 0);
-    ir_builder_config_t ir_builder_config = IR_BUILDER_DEFAULT_CONFIG((ir_dev_t)example_tx_channel);
-    ir_builder_config.flags |= IR_TOOLS_FLAGS_PROTO_EXT; // Using extended IR protocols (both NEC and RC5 have extended version)
+    rmt_driver_install(rmt_channel0, 0, 0);
+    ir_builder_config_t ir_builder_config = IR_BUILDER_DEFAULT_CONFIG((ir_dev_t)rmt_channel0);
     ir_builder = ir_builder_rmt_new_nec(&ir_builder_config);
 
     while (true) {
-        ir_builder->build_frame(ir_builder, addr, cmd);
-        ir_builder->get_result(ir_builder, &items, &length);
-        rmt_write_items(example_tx_channel, items, length, false);
-        // Send repeat code
-        //vTaskDelay(pdMS_TO_TICKS(ir_builder->repeat_period_ms));
-        //ir_builder->build_repeat_frame(ir_builder);
-        //ir_builder->get_result(ir_builder, &items, &length);
-        //rmt_write_items(example_tx_channel, items, length, false);
-//        cmd = (cmd+1)%256;
-        vTaskDelay(1000 / portTICK_RATE_MS);
+        for (i=0; i<size; i++) {
+            addr = (input[i] >> 16) & 0xffff;
+            cmd = input[i] & 0xffff;
+            ir_builder->build_frame(ir_builder, addr, cmd);
+            ir_builder->get_result(ir_builder, &items, &length);
+            rmt_write_items(rmt_channel0, items, length, false);
+            vTaskDelay(500 / portTICK_RATE_MS);
+        }
+        vTaskDelay(2000 / portTICK_RATE_MS);
     }
 }
 

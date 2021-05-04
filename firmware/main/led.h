@@ -8,7 +8,8 @@
 #define LED_SOLO_VAR_SIZE 29751
 #define LED_RGB_VAR_SIZE 27875
 #define LED_UV_SIZE 94
-#define LED_IR_SIZE 0
+#define LED_IR1_SIZE 26
+#define LED_IR2_SIZE 0
 
 void led_blink(int32_t pin);
 void led_solo_binary(const uint8_t *input, uint32_t size);
@@ -17,13 +18,17 @@ void led_rgb_binary(const uint32_t *input, uint32_t size);
 void led_rgb_variable(const uint32_t *input, uint32_t size);
 
 void led_uv(const uint8_t *input, uint32_t size);
-void led_ir(const uint8_t *input, uint32_t size);
+void led_ir(const uint32_t *input, uint32_t size);
 
 void led_braille(const uint8_t *input, uint32_t size);
 void led_pov(const uint8_t *input, uint32_t size);
 
 const uint8_t *braille[26] = {0};
 const uint8_t *pov[26] = {0};
+
+const uint32_t data_ir2[] = {};
+
+const uint32_t data_ir1[] = {4278229350, 4278204870, 4278249750, 4278225270, 4278208695, 4278245670, 4278242355, 4278237255, 4278237255, 4278233430, 4278245415, 4278192885, 4278205380, 4278233175, 4278241590, 4278208950, 4278192885, 4278197220, 4278233940, 4278242100, 4278192885, 4278237255, 4278250515, 4278200790, 4278242355, 4278200535};
 
 const uint8_t data_uv[] = {77, 121, 32, 100, 101, 97, 114, 32, 77, 114, 46, 32, 72, 111, 111, 118, 101, 114, 58, 32, 89, 111, 117, 114, 32, 107, 105, 110, 100, 32, 108, 101, 116, 116, 101, 114, 32, 111, 102, 32, 79, 99, 116, 111, 98, 101, 114, 32, 55, 116, 104, 32, 114, 101, 99, 101, 105, 118, 101, 100, 46, 32, 102, 108, 97, 103, 123, 114, 51, 52, 100, 105, 110, 103, 95, 98, 69, 116, 119, 101, 101, 110, 95, 116, 104, 51, 95, 108, 49, 103, 104, 116, 83, 125};
 
