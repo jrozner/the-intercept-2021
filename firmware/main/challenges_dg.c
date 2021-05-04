@@ -28,7 +28,7 @@ void led_rgb_variable(const uint32_t *input, uint32_t size) {
          .speed_mode = LEDC_HIGH_SPEED_MODE,
          .bit_num = LEDC_TIMER_10_BIT,
          .timer_num = LEDC_TIMER_1,
-         .duty_resolution = 8,
+//         .duty_resolution = 8,
          .freq_hz = freq,
     };
     ledc_timer_config(&timer_conf);
@@ -46,7 +46,7 @@ void led_rgb_variable(const uint32_t *input, uint32_t size) {
          .speed_mode = LEDC_HIGH_SPEED_MODE,
          .bit_num = LEDC_TIMER_10_BIT,
          .timer_num = LEDC_TIMER_2,
-         .duty_resolution = 8,
+//        .duty_resolution = 8,
          .freq_hz = freq,
     };
     ledc_timer_config(&timer_conf2);
@@ -64,7 +64,7 @@ void led_rgb_variable(const uint32_t *input, uint32_t size) {
          .speed_mode = LEDC_HIGH_SPEED_MODE,
          .bit_num = LEDC_TIMER_10_BIT,
          .timer_num = LEDC_TIMER_3,
-         .duty_resolution = 8,
+//       .duty_resolution = 8,
          .freq_hz = freq,
     };
     ledc_timer_config(&timer_conf3);
@@ -109,7 +109,7 @@ void led_solo_variable(const uint8_t *input, uint32_t size) {
          .speed_mode = LEDC_HIGH_SPEED_MODE,
          .bit_num = LEDC_TIMER_10_BIT,
          .timer_num = LEDC_TIMER_1,
-         .duty_resolution = 8,
+//       .duty_resolution = 8,
          .freq_hz = freq,
     };
     ledc_timer_config(&timer_conf);
