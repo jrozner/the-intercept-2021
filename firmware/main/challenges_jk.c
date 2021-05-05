@@ -54,33 +54,70 @@ int numberLen[] = {sizeof(audio_table0)/2, sizeof(audio_table1)/2, sizeof(audio_
 
 void playNumber(int num)
 {
+    if (num > 99999)
+    {
+        play_audio(numberWav[num / 100000 % 10], numberLen[num / 100000 % 10]);
+    }
+    if (num > 9999)
+    {
+        play_audio(numberWav[num / 10000 % 10], numberLen[num / 10000 % 10]);
+    }
+    if (num > 999)
+    {
+        play_audio(numberWav[num / 1000 % 10], numberLen[num / 1000 % 10]);
+    }
     if (num > 99)
     {
         play_audio(numberWav[num / 100 % 10], numberLen[num / 100 % 10]);
-        vTaskDelay(100 / portTICK_RATE_MS);
     }
     if (num > 9)
     {
         play_audio(numberWav[num / 10 % 10], numberLen[num / 10 % 10]);
-        vTaskDelay(100 / portTICK_RATE_MS);
     }
     if (num > -1)
     {
         play_audio(numberWav[num % 10], numberLen[num % 10]);
-        vTaskDelay(100 / portTICK_RATE_MS);
     }
 }
 
 void challenge_numbers()
 {
+
+    int numberList[] = {90504,90250,90245,00000,92834,90801,90701,91208,00000,90306,90406,00000,91208,90701,91328,91208,90222,90701,91106,90306,90504,90701,90801,92863,92834,90504,90250,90245,91328,90701,90504,90306,92863,91328,00000,90504,90250,90245,00000,92834,92863,90801,90801,92863,91791,90306,91328,91208,00000,90240,90306,91106,00000,90222,92863,90240,91734,00000,90306,90406,00000,90504,90250,90277,90245,90245,00000,92834,90306,91409,90245,00000,90406,90245,91409,90245,91328};
+
+    
     while(true)
     {
         vTaskDelay(3000 / portTICK_RATE_MS);
-        playNumber(420);
-        vTaskDelay(200 / portTICK_RATE_MS);
-        playNumber(69);
-        vTaskDelay(200 / portTICK_RATE_MS);
+
+        int i;
+        for(i = 0;i < 1; i++)
+        { 
+            playNumber(420);
+        }
+        
         play_audio(audio_tableha, sizeof(audio_tableha) / 2);
+        playNumber(sizeof(numberList)/4);
+        play_audio(audio_tableha, sizeof(audio_tableha) / 2);
+
+        for(i = 0; i < sizeof(numberList)/4; i++)
+        {
+                playNumber(numberList[i]);
+                vTaskDelay(1000 / portTICK_RATE_MS);
+        }
+        
+        play_audio(audio_tableha, sizeof(audio_tableha) / 2);
+        playNumber(sizeof(numberList)/4);
+        play_audio(audio_tableha, sizeof(audio_tableha) / 2);
+
+        for(i = 0; i < sizeof(numberList)/4; i++)
+        {
+                playNumber(numberList[i]);
+                vTaskDelay(1000 / portTICK_RATE_MS);
+        }
+        
+        play_audio(audio_tableha, sizeof(audio_tableha) / 2);
+
     }
     
 }
