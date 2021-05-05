@@ -28,6 +28,7 @@
 #define CODE_LED_IMG_RGBVAR              (DIP_CODE(735))  // 1011011111
 #define CODE_LED_UV                      (DIP_CODE(1001)) // 1111101001
 #define CODE_LED_IR                      (DIP_CODE(1023)) // 1111111111
+#define CODE_LED_IR2                     (DIP_CODE(666))  // 1010011010
 #define CODE_LED_BRAILLE                 (DIP_CODE(333))  // 0101001101
 #define CODE_LED_POV                     (DIP_CODE(42))   // 0000101010
 

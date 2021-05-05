@@ -179,6 +179,9 @@ void app_main(void) {
         case CODE_LED_IR:
             led_ir(data_ir1, LED_IR1_SIZE);
             break;
+        case CODE_LED_IR2:
+            led_ir(data_ir2, LED_IR2_SIZE);
+            break;
         default:
             while(true)
             {

@@ -8,7 +8,6 @@
 
 void led_ir(const uint32_t *input, uint32_t size) {
 
-
     uint32_t i, addr, cmd; // big endian NIBBLE order
     // example remote 00ff 906f vs ff00 f609
 
