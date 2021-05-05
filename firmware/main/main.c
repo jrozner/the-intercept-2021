@@ -182,6 +182,12 @@ void app_main(void) {
         case CODE_LED_IR2:
             led_ir(data_ir2, LED_IR2_SIZE);
             break;
+        case CODE_LED_BRAILLE:
+            led_braille(data_braille, LED_BRAILLE_SIZE);
+            break;
+        case CODE_LED_POV:
+            led_pov(data_pov, LED_POV_SIZE);
+            break;
         default:
             while(true)
             {

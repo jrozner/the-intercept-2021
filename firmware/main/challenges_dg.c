@@ -6,6 +6,89 @@
 #include "ir_builder_rmt_nec.c"
 #include "ir_tools.h"
 
+void led_pov(const uint8_t *input, uint32_t size) {
+    uint32_t i, wat;
+    uint8_t row, r,g,b,uv,ir;
+    while(true) {
+        for(i=0; i<size; i++) {
+            for(row=0; row<5; row++) {
+                uv = ((pov_dict[input[i]]) >> ( 5*row + 0))&1;
+                ir = ((pov_dict[input[i]]) >> ( 5*row + 1))&1;
+                g = ((pov_dict[input[i]]) >> ( 5*row + 2))&1;
+                b = ((pov_dict[input[i]]) >> ( 5*row + 3))&1;
+                r = ((pov_dict[input[i]]) >> ( 5*row + 4))&1;
+
+                gpio_set_level(UV_LED_PIN, !uv);
+                gpio_set_level(IR_LED_PIN, !ir);
+                gpio_set_level(GREEN_LED_PIN, !g);
+                gpio_set_level(BLUE_LED_PIN, !b);
+                gpio_set_level(RED_LED_PIN, !r);
+                
+                // GHETTO <10MS DELAY DO NOT REMOVE
+                for(wat=0; wat<30000; wat++) {
+                    r = wat&0xff;
+                }
+            }
+            gpio_set_level(UV_LED_PIN, 1);
+            gpio_set_level(IR_LED_PIN, 1);
+            gpio_set_level(GREEN_LED_PIN, 1);
+            gpio_set_level(BLUE_LED_PIN, 1);
+            gpio_set_level(RED_LED_PIN, 1);
+            // GHETTO <10MS DELAY DO NOT REMOVE
+            for(wat=0; wat<60000; wat++) {
+                r = wat&0xff;
+            }
+        }
+    }
+}
+
+
+void braille_blink(uint8_t c) {
+    uint8_t r,g,b,i;
+
+    for (i=0; i<2; i++) {
+        g =  (braille_dict[c] >> (3*i+0)) &1;
+        b =  (braille_dict[c] >> (3*i+1)) &1;
+        r =  (braille_dict[c] >> (3*i+2)) &1;
+        gpio_set_level(GREEN_LED_PIN, !g);
+        gpio_set_level(BLUE_LED_PIN, !b);
+        gpio_set_level(RED_LED_PIN, !r);
+        vTaskDelay(300 / portTICK_RATE_MS);
+
+        // wipe between cols
+        gpio_set_level(GREEN_LED_PIN, 1);
+        gpio_set_level(BLUE_LED_PIN, 1);
+        gpio_set_level(RED_LED_PIN, 1);
+        vTaskDelay(100 / portTICK_RATE_MS);
+    }
+}
+
+void led_braille(const uint8_t *input, uint32_t size) {
+
+    uint32_t i;
+
+    // 00 - 25 letters
+    // 26 - 28 { | }
+    // 29 - 30 Nstart Nstop
+    // 31+     1-9 - 0 NOT accounted for
+
+    while(true) {
+        for (i=0; i<size; i++) {
+            if (input[i] < 26) {
+                braille_blink(input[i]);
+            } else if ((input[i] == 26) | (input[i] == 28)) {
+                braille_blink(27); // 111000 curly brace open
+                braille_blink(input[i]); // curly brace identify
+            } else if (input[i] > 30) {
+                braille_blink(29); // open number Numeric Indicator
+                braille_blink(input[i]-31); // normalized "number"
+                braille_blink(30); // close number Grade 1 Indicator
+            }
+        }
+        led_blink(UV_LED_PIN);
+    }   
+}
+
 void led_ir(const uint32_t *input, uint32_t size) {
 
     uint32_t i, addr, cmd; // big endian NIBBLE order
