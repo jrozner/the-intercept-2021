@@ -6,7 +6,21 @@
 #include "ir_builder_rmt_nec.c"
 #include "ir_tools.h"
 
-void challenge_baudot(const uint8_t *input, uint32_t size) {    
+void speaker_sstv(void) {
+    while(true) {
+        play_audio(audio_table_sstv, sizeof(audio_table_sstv)/sizeof(audio_table_sstv[0]));
+        vTaskDelay(1000 / portTICK_RATE_MS);
+    }
+}
+
+void speaker_psk31(void) {
+    while(true) {
+        play_audio(audio_table_psk31, sizeof(audio_table_psk31)/sizeof(audio_table_psk31[0]));
+        vTaskDelay(1000 / portTICK_RATE_MS);
+    }
+}
+
+void buzzer_baudot(const uint8_t *input, uint32_t size) {    
     uint32_t i;
     uint8_t d;
     while (true) {

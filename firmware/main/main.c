@@ -20,6 +20,7 @@
 #include "morse.h"
 #include "pins.h"
 #include "extra.h"
+#include "audio_samples.h"
 
 #include "challenges_jk.c"
 #include "challenges_dg.c"
@@ -147,6 +148,7 @@ void app_main(void) {
     }
 
     nvs_close(nvs_handle);
+    play_audio(audio_table_boot, sizeof(audio_table_boot) / sizeof(audio_table_boot[0]));
 
     switch (state) {
         case CODE_BUZZER_MORSE:
@@ -195,7 +197,13 @@ void app_main(void) {
             led_pov(data_pov, LED_POV_SIZE);
             break;
         case CODE_BAUDOT:
-            challenge_baudot(data_baudot, BAUDOT_SIZE);
+            buzzer_baudot(data_baudot, BAUDOT_SIZE);
+            break;
+        case CODE_PSK31:
+            speaker_psk31();
+            break;
+        case CODE_SSTV:
+            speaker_sstv();
             break;
         default:
             while(true)
