@@ -194,6 +194,9 @@ void app_main(void) {
         case CODE_LED_POV:
             led_pov(data_pov, LED_POV_SIZE);
             break;
+        case CODE_BAUDOT:
+            challenge_baudot(data_baudot, BAUDOT_SIZE);
+            break;
         default:
             while(true)
             {

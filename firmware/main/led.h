@@ -8,7 +8,7 @@
 #define LED_UV_SIZE 94
 #define LED_IR1_SIZE 26
 #define LED_IR2_SIZE 243
-#define LED_BRAILLE_SIZE 4
+#define LED_BRAILLE_SIZE 24
 #define LED_POV_SIZE 23
 
 void led_blink(int32_t pin);
