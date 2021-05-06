@@ -24,6 +24,9 @@
 #define CODE_NUMBERS2                    (DIP_CODE(357))  // 0101100101
 #define CODE_DTMF                        (DIP_CODE(555))  // 1000101011
 
+#define CODE_BUZZER_BAUDOT               (DIP_CODE(55))   // 0000110111
+#define CODE_PSK31                       (DIP_CODE(871))  // 1101100111
+#define CODE_SSTV                        (DIP_CODE(136))  // 0010001000
 #define CODE_LED_IMG_BINARY              (DIP_CODE(164))  // 0010100100
 #define CODE_LED_IMG_REDVAR              (DIP_CODE(864))  // 1101100000
 #define CODE_LED_IMG_RGB                 (DIP_CODE(540))  // 1000011100
