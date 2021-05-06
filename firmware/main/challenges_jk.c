@@ -8,26 +8,6 @@
 #include "pins.h"
 #include "audio_numbers.h"
 
-void play_audio2(const uint16_t *buf, uint32_t numSamples) {
-    // turn on max98375a
-
-    int offset = 0;
-    int tot_size = numSamples * 2;
-    size_t bytes_written = 0;
-    while (offset < tot_size) {
-        int play_len = ((tot_size - offset) > (4 * 1024)) ? (4 * 1024) : (tot_size - offset);
-        // pointer arithmetic is weird so it's audio_table + offset in samples rather than bytes
-        i2s_write(0, buf + (offset / SAMPLE_SIZE), play_len, &bytes_written, portMAX_DELAY);
-        offset += bytes_written;
-    }
-    //vTaskDelay(100 / portTICK_PERIOD_MS);
-    // turn on max98375a
-    //gpio_set_level(I2S_AIO_PIN, 0);
-    //i2s_set_clk(0, SAMPLE_RATE, SAMPLE_BITS, 2);
-}
-
-
-
 void challenge_buzzer_morse()
 {
     while(true)
@@ -121,6 +101,107 @@ void challenge_numbers()
     }
     
 }
+
+void play_dtmf(char *sequence)
+{
+
+    uint16_t *bufTone = (uint16_t*) heap_caps_malloc(SAMPLE_RATE * 1 * 2, MALLOC_CAP_8BIT);
+
+
+    int j;
+    for(j = 0; j < strlen(sequence); j++)
+    {
+        float freq1 = 0;
+        float freq2 = 0;
+
+        if (sequence[j] == '-')
+        {
+            vTaskDelay(1000 / portTICK_RATE_MS);
+            continue;
+        }
+        else if (sequence[j] == '*')
+        {
+            freq1 = 1209;
+            freq2 = 941;
+        }
+        else if (sequence[j] == '*')
+        {
+            freq1 = 1477;
+            freq2 = 941;
+        }
+        else
+        {
+            int digit = sequence[j] - '0';
+
+            int dtmf1[] = {1336, 1209, 1336, 1477, 1209, 1336, 1477, 1209, 1336, 1477};
+            int dtmf2[] = {941, 697, 697, 697, 770, 770, 770, 852, 852, 852};
+
+            freq1 = dtmf1[digit];
+            freq2 = dtmf2[digit];
+        }
+
+        int i;
+        for(i = 0; i < (int)(SAMPLE_RATE * 0.05); i++)
+        {
+
+            float volume = 0.2;
+
+            float s1 = sin(i * freq1 * 3.141 * 2 / SAMPLE_RATE) * volume; 
+            float s2 = sin((i + 20) * freq2 * 3.141 * 2 / SAMPLE_RATE) * volume; 
+
+            float samp = s1 + s2;
+            
+            int16_t temp = (int16_t)(samp * 65535.0 / 2.0);
+            uint16_t utemp = * ((uint16_t *) &temp);
+
+            bufTone[i] = utemp;    
+
+        }
+            
+        play_audio(bufTone, (int)(SAMPLE_RATE * 0.05));
+        vTaskDelay(50 / portTICK_RATE_MS);
+    }
+
+    free(bufTone);
+
+}  
+
+void play_text(char *text)
+{
+    char *numpad[] = {"2","22","222","3","33","333","4","44","444","5","55","555","6","66","666","7","77","777","7777","8","88","888","9","99","999"};
+
+    char last_letter = '$';
+
+    int i;
+    for(i = 0; i < strlen(text); i++)
+    {
+        char letter = text[i];
+
+        if (letter ==  ' ')
+        {
+            play_dtmf("0");
+        }
+        else
+        {
+            if (last_letter == numpad[letter-'a'][0])
+                vTaskDelay(200 / portTICK_RATE_MS);
+                
+            last_letter = numpad[letter-'a'][0];
+            play_dtmf(numpad[letter-'a']);
+            vTaskDelay(50 / portTICK_RATE_MS);
+        }
+    }
+
+}
+
+void challenge_dtmf()
+{
+    while(1)
+    {
+        vTaskDelay(3000 / portTICK_RATE_MS);
+        play_text("flag is brbcarcrashlol");
+    }
+} 
 
 void challenge_infrasound()
 {

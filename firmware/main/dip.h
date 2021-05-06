@@ -22,6 +22,7 @@
 #define CODE_INFRASOUND                  (DIP_CODE(831))  // 1100111111
 #define CODE_NUMBERS                     (DIP_CODE(44))   // 0000101100
 #define CODE_NUMBERS2                    (DIP_CODE(357))  // 0101100101
+#define CODE_DTMF                        (DIP_CODE(555))  // 1000101011
 
 #define CODE_LED_IMG_BINARY              (DIP_CODE(164))  // 0010100100
 #define CODE_LED_IMG_REDVAR              (DIP_CODE(864))  // 1101100000
