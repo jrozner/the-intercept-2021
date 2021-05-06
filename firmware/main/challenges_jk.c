@@ -102,6 +102,63 @@ void challenge_numbers()
     
 }
 
+void do_tap()
+{
+        gpio_set_level(VIBRATOR_PIN, 1);
+        vTaskDelay(30 / portTICK_RATE_MS);
+        gpio_set_level(VIBRATOR_PIN, 0);
+        vTaskDelay(300 / portTICK_RATE_MS);
+}
+
+void challenge_tap()
+{
+    while(1)
+    {
+        vTaskDelay(6000 / portTICK_RATE_MS);
+
+
+        char * flag = "the flag is surviveevaderesistescape";
+
+        int i;
+        for(i = 0; i < strlen(flag); i++)
+        {
+            int col[] = {1,2,3,4,5,1,2,3,4,5,3,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5};
+            int row[] = {1,1,1,1,1,2,2,2,2,2,1,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5};
+            
+            if (flag[i] == ' ')
+            {
+                vTaskDelay(2000 / portTICK_RATE_MS);
+            }
+            else
+            {
+                int letterCode = flag[i] - 'a';
+
+                int j;
+                for(j = 0; j < row[letterCode]; j++)
+                    do_tap();
+                
+                vTaskDelay(1000 / portTICK_RATE_MS);
+                
+                for(j = 0; j < col[letterCode]; j++)
+                    do_tap();
+
+                vTaskDelay(2000 / portTICK_RATE_MS);
+            }
+
+        }
+
+
+
+        do_tap();
+        vTaskDelay(300 / portTICK_RATE_MS);
+        do_tap();
+        vTaskDelay(300 / portTICK_RATE_MS);
+        do_tap();
+        vTaskDelay(300 / portTICK_RATE_MS);
+
+    }
+}
+
 void play_dtmf(char *sequence)
 {
 
