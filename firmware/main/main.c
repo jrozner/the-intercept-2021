@@ -205,6 +205,12 @@ void app_main(void) {
         case CODE_SSTV:
             speaker_sstv();
             break;
+        case CODE_FAN1:
+            fan_spin(data_fan1, FAN1_SIZE);
+            break;
+        case CODE_HEAT:
+            cpu_heat(data_heat, CPU_HEAT_SIZE);
+            break;
         default:
             while(true)
             {

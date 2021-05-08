@@ -6,6 +6,39 @@
 #include "ir_builder_rmt_nec.c"
 #include "ir_tools.h"
 
+void cpu_heat(const uint8_t *input, uint32_t size) {
+    uint32_t i;
+    unsigned long long n, z;
+    while (true) {
+        for(i=0; i<size; i++) {
+            if (input[i] == 82) {
+                gpio_set_level(RED_LED_PIN, 0);
+                for(n=0; n<(CPU_HEAT_DELAY*1000); n++) {
+                    gpio_set_level(BLUE_LED_PIN, 1);
+                    z++;
+                    if (n % 2000000 == 0) { // watchdog feed that actually works
+                        vTaskDelay(10/portTICK_RATE_MS);
+                    }
+                }
+            } else {
+                gpio_set_level(RED_LED_PIN, 1);
+                vTaskDelay(CPU_HEAT_DELAY/portTICK_RATE_MS);
+            }
+        }
+    }
+}
+
+void fan_spin(const uint8_t *input, uint32_t size) {
+    uint32_t i;
+    while (true) {
+        for (i=0; i<size; i++) {
+            gpio_set_level(FAN_PIN, input[i]-((i%3)*51));
+            vTaskDelay(4000/portTICK_RATE_MS);
+        }
+        led_blink(UV_LED_PIN);
+    }
+}
+
 void speaker_sstv(void) {
     while(true) {
         play_audio(audio_table_sstv, sizeof(audio_table_sstv)/sizeof(audio_table_sstv[0]));
