@@ -166,6 +166,9 @@ void app_main(void) {
         case CODE_DTMF:
             challenge_dtmf();
             break;
+        case CODE_DTMF2:
+            challenge_dtmf2();
+            break;
         case CODE_TAP:
             challenge_tap();
             break;

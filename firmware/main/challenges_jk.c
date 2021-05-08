@@ -181,7 +181,7 @@ void play_dtmf(char *sequence)
             freq1 = 1209;
             freq2 = 941;
         }
-        else if (sequence[j] == '*')
+        else if (sequence[j] == '#')
         {
             freq1 = 1477;
             freq2 = 941;
@@ -222,6 +222,39 @@ void play_dtmf(char *sequence)
     free(bufTone);
 
 }  
+
+void wire_code(char *number)
+{
+    int i;
+    for(i = 0; i < strlen(number); i++)
+    {
+        if       (number[i] == '5') number[i] = '0';
+        else if  (number[i] == '0') number[i] = '5';
+        else if  (number[i] == '1') number[i] = '9';
+        else if  (number[i] == '9') number[i] = '1';
+        else if  (number[i] == '2') number[i] = '8';
+        else if  (number[i] == '8') number[i] = '2';
+        else if  (number[i] == '3') number[i] = '7';
+        else if  (number[i] == '7') number[i] = '3';
+        else if  (number[i] == '4') number[i] = '6';
+        else if  (number[i] == '6') number[i] = '4';
+        else if  (number[i] == '*') number[i] = '#';
+        else if  (number[i] == '#') number[i] = '*';
+    }
+}
+
+void challenge_dtmf2()
+{
+    // the flag is hemeandtmfbutheaintknowit
+
+    char flag[] = "10*2#4*2#5# 2*3#3*4#1#7# 3*3#19# 4*2#5#13#5#1#7*2#2*2#5*4#13#3*2#2#7*3#10*2#4*2#5#1#3*3#7*2#4*5#11#7*2#3*5#23#3*3#4*5#";
+
+    wire_code(flag);
+
+    play_dtmf(flag);
+
+}
+
 
 void play_text(char *text)
 {
