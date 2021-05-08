@@ -102,6 +102,48 @@ void challenge_numbers()
     
 }
 
+void challenge_numbers2()
+{
+    while(true)
+    {
+        vTaskDelay(3000 / portTICK_RATE_MS);
+
+        char *flag = "the flag is flag{c0unting_i5_fuN}";
+
+        int i;
+        for(i = 0; i < strlen(flag); i++)
+        {
+            int ascii_code = flag[i];
+            if (ascii_code > 99)
+            {
+                int missingNum = ascii_code / 100 % 10;
+                int j;
+                for(j = 0; j < 10; j++)
+                    if (j != missingNum)
+                        playNumber(j);
+            }
+            if (ascii_code > 9)
+            {
+                int missingNum = ascii_code / 10 % 10;
+                int j;
+                for(j = 0; j < 10; j++)
+                    if (j != missingNum)
+                        playNumber(j);
+            }
+            if (ascii_code > -1)
+            {
+                int missingNum = ascii_code % 10;
+                int j;
+                for(j = 0; j < 10; j++)
+                    if (j != missingNum)
+                        playNumber(j);
+            }
+            play_audio(audio_tableha, sizeof(audio_tableha) / 2);
+            
+        }
+    }
+}
+
 void do_tap()
 {
         gpio_set_level(VIBRATOR_PIN, 1);
@@ -251,8 +293,12 @@ void challenge_dtmf2()
 
     wire_code(flag);
 
-    play_dtmf(flag);
+    while(1)
+    {
+        vTaskDelay(3000 / portTICK_RATE_MS);
 
+        play_dtmf(flag);
+    }
 }
 
 

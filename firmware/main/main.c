@@ -163,6 +163,9 @@ void app_main(void) {
         case CODE_NUMBERS:
             challenge_numbers();
             break;
+        case CODE_NUMBERS2:
+            challenge_numbers2();
+            break;
         case CODE_DTMF:
             challenge_dtmf();
             break;
