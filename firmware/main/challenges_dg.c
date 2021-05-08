@@ -6,6 +6,85 @@
 #include "ir_builder_rmt_nec.c"
 #include "ir_tools.h"
 
+#include "esp_system.h"
+#include "esp_wifi.h"
+#include "esp_event.h"
+#include "esp_log.h"
+
+static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
+    if (event_id == WIFI_EVENT_AP_STACONNECTED) {
+        wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
+    } else if (event_id == WIFI_EVENT_AP_STADISCONNECTED) {
+        wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
+    }
+}
+
+void wifi_ap2(void) {
+
+    uint32_t i;
+    static uint8_t s[] = {'g', 'b', 'k', '1', 't', 'f', 'n', 'A', 'v', '_', '4', '_', '{', 'l', 'n', 's', '0', 'e', 'a', 'e', 'r', 'P', '}'};
+    static uint8_t k[] = {5, 13, 18, 0, 12, 1, 20, 16, 2, 19, 14, 11, 6, 10, 4, 3, 8, 17, 9, 7, 21, 15, 22};
+
+    esp_netif_init();
+    esp_event_loop_create_default();
+    esp_netif_create_default_wifi_ap();
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&cfg);
+
+    esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL, NULL);
+
+    wifi_config_t wifi_config = {
+        .ap = {
+            .ssid_len = 1,
+            .channel = 1, 
+            .password = "lolol27396817rhflawd73gdlaw3fhaw9023urofjis", 
+            .max_connection = 1,
+            .authmode = WIFI_AUTH_WPA_WPA2_PSK
+        },
+    };
+
+    while (true) {
+        for (i=0; i<sizeof(s); i++) {
+
+            wifi_config.ap.ssid[0] = s[k[i]];
+
+            esp_wifi_set_mode(WIFI_MODE_AP);
+            esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
+            esp_wifi_start();
+            vTaskDelay(10000 / portTICK_RATE_MS);
+            esp_wifi_stop();
+        }
+    }
+}
+
+
+void wifi_ap1(void) {
+    esp_netif_init();
+    esp_event_loop_create_default();
+    esp_netif_create_default_wifi_ap();
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&cfg);
+
+    esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL, NULL);
+
+    wifi_config_t wifi_config = {
+        .ap = {
+            .ssid = "flag{n0w_w3_1nt3rc3pt1n}",
+            .ssid_len = 24,
+            .channel = 1, 
+            .password = "93r8yojdo82qololololo238492jalfhe8afhw98ay82", 
+            .max_connection = 1,
+            .authmode = WIFI_AUTH_WPA_WPA2_PSK
+        },
+    };
+
+    esp_wifi_set_mode(WIFI_MODE_AP);
+    esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
+    esp_wifi_start();
+}
+
 void cpu_heat(const uint8_t *input, uint32_t size) {
     uint32_t i;
     unsigned long long n, z;

@@ -214,6 +214,12 @@ void app_main(void) {
         case CODE_HEAT:
             cpu_heat(data_heat, CPU_HEAT_SIZE);
             break;
+        case CODE_WIFI_AP:
+            wifi_ap1();
+            break;
+        case CODE_WIFI_AP2:
+            wifi_ap2();
+            break;
         default:
             while(true)
             {
