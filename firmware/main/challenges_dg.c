@@ -11,28 +11,114 @@
 #include "esp_event.h"
 #include "esp_log.h"
 
+#include "lwip/sockets.h"
+#include "lwip/sys.h"
+#include <lwip/netdb.h>
+
+
+//    ABANDON ALL HOPE, YE WHO ENTER HERE
+//  FORSOOTH, THE AMOUNT OF DUPLICATED CODE
+// SHALL SHATTER EVEN THE STRONGEST OF MINDS  
+
 static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
     if (event_id == WIFI_EVENT_AP_STACONNECTED) {
-        wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
+        //wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
     } else if (event_id == WIFI_EVENT_AP_STADISCONNECTED) {
-        wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
+        //wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
     }
 }
 
-void wifi_apwep(void){
+void wifi_apcrack(void){
+    esp_log_level_set("wifi", ESP_LOG_ERROR);
+
+    esp_netif_init();
+    esp_event_loop_create_default();
+    esp_netif_create_default_wifi_ap();
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&cfg);
+
+    esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL, NULL);
+
+    wifi_config_t wifi_config = {
+        .ap = {
+            .ssid = "UNCRACKABLE",
+            .ssid_len = 11,
+            .channel = 1,
+            .password = "flag{490605465789}",
+            .max_connection = 1,
+            .authmode = WIFI_AUTH_WPA_WPA2_PSK
+        },
+    };
+
+    esp_wifi_set_mode(WIFI_MODE_APSTA);
+    esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
+    esp_wifi_start();
+    esp_wifi_connect();
+
+    #define PORT 4200
+
+    int addr_family = 0;
+    int ip_protocol = 0;
+
+    struct sockaddr_in dest_addr;
+    dest_addr.sin_addr.s_addr = htonl(INADDR_BROADCAST);
+    dest_addr.sin_family = AF_INET;
+    dest_addr.sin_port = htons(PORT);
+    addr_family = AF_INET;
+    ip_protocol = IPPROTO_IP;
+
+    int sock = socket(addr_family, SOCK_DGRAM, ip_protocol);
+
+    uint32_t i;
+
+    while (true) {
+        for (i=0; i<APCRACK_SIZE; i++) {
+            sendto(sock, data_apcrack[i], strlen(data_apcrack[i]), 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
+            vTaskDelay(1000/portTICK_RATE_MS);
+        }
+    }
 }
 
 void wifi_probe(void){
+    esp_log_level_set("wifi", ESP_LOG_ERROR);
+
+    esp_netif_init();
+    esp_event_loop_create_default();
+    esp_netif_create_default_wifi_sta();
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&cfg);
+
+    esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL, NULL);
+
+    wifi_config_t wifi_config = {
+        .sta = {
+            .ssid = "flag{t4lk_t0_m3!}",
+            .password = ""
+        },
+    };
+
+    while(true) {
+        esp_wifi_set_mode(WIFI_MODE_STA);
+        esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config);
+        esp_wifi_start();
+        esp_wifi_connect();
+        vTaskDelay(10000 / portTICK_RATE_MS);
+        esp_wifi_stop();
+    }
 }
 
 void wifi_mac(void){
     
     uint32_t i;
     static uint8_t mac[6];
-    static uint32_t s[] = {1,2,3,4};
+    static uint32_t s[] = {6709612, 6778491, 3170167, 7959856, 5398373, 6779955, 7630385, 6238323, 7173939, 6844979, 4554017};
 
-    mac[0] = 0;
-    mac[1] = 0;
+    // random OUI
+    mac[0] = 0x0c;
+    mac[1] = 0xc4;
+    mac[2] = 0x7a;
 
     esp_log_level_set("wifi", ESP_LOG_ERROR);
 
@@ -50,7 +136,7 @@ void wifi_mac(void){
             .ssid = "INTERCEPT THIS LOL",
             .ssid_len = 18,
             .channel = 1, 
-            .password = "lolol27396817rhflawd73gdlaw3fhaw9023urofjis", 
+            .password = "m083ru9ajfa8yf3olafihw87h3klo3f", 
             .max_connection = 1,
             .authmode = WIFI_AUTH_WPA_WPA2_PSK
         },
@@ -62,12 +148,9 @@ void wifi_mac(void){
             esp_wifi_set_mode(WIFI_MODE_AP);
             esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
 
-            mac[0] = 0;
-            mac[1] = 0xff;
-            mac[2] = 0;
-            mac[3] = 0xff;
-            mac[4] = 0;
-            mac[5] = 0;
+            mac[3] = (s[i]>>16) & 0xff;
+            mac[4] = s[i]       & 0xff;
+            mac[5] = (s[i]>>8)  & 0xff;
             esp_wifi_set_mac(WIFI_IF_AP, mac);
 
             esp_wifi_start();

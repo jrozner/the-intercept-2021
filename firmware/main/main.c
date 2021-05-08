@@ -25,9 +25,6 @@
 #include "challenges_jk.c"
 #include "challenges_dg.c"
 
-
-static const char *TAG = "main";
-
 void app_main(void) {
     // gpio config for all output pins
     gpio_config_t io_conf = {
@@ -229,8 +226,8 @@ void app_main(void) {
         case CODE_WIFI_PROBE:
             wifi_probe();
             break;
-        case CODE_WIFI_APWEP:
-            wifi_apwep();
+        case CODE_WIFI_APCRACK:
+            wifi_apcrack();
             break;
         default:
             while(true)

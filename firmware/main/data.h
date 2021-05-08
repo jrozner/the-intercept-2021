@@ -1,7 +1,21 @@
 #ifndef THEINTERCEPT_DATA_H
 #define THEINTERCEPT_DATA_H
 
-void wifi_apwep(void);
+#define APCRACK_SIZE 9
+
+static const char *data_apcrack[] = {
+"              ,      [fla]",
+"     __  _.-\"` `'-.  [g{d3]",
+"    /||\\'._ __{}_(   [f1n1]",
+"    ||||  |'--.__\\   [t3]",
+"    |  L.(   ^_\\^    [ly_]",
+"    \\ .-' |   _ |    [2_]",
+"    | |   )\\___/     [eZ]",
+"    |  \\-'`:._]      [y}]",
+"    \\__/;      '-."
+};
+
+void wifi_apcrack(void);
 void wifi_probe(void);
 void wifi_mac(void);
 void wifi_ap2(void);

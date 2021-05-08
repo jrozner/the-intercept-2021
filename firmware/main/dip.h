@@ -30,7 +30,7 @@
 #define CODE_WIFI_AP2                    (DIP_CODE(770))  // 1100000010
 #define CODE_WIFI_MAC                    (DIP_CODE(85))   // 0001010101
 #define CODE_WIFI_PROBE                  (DIP_CODE(10))   // 0000001010
-#define CODE_WIFI_APWEP                  (DIP_CODE(626))  // 1001110010
+#define CODE_WIFI_APCRACK                (DIP_CODE(626))  // 1001110010
 
 #define CODE_HEAT                        (DIP_CODE(640))  // 1010000000
 #define CODE_FAN1                        (DIP_CODE(232))  // 0011101000
