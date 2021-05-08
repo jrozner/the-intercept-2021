@@ -1,4 +1,4 @@
-#reifndef THEINTERCEPT_DIP_H
+#ifndef THEINTERCEPT_DIP_H
 #define THEINTERCEPT_DIP_H
 
 #define DIP1 (1 << 7)

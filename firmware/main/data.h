@@ -1,6 +1,10 @@
 #ifndef THEINTERCEPT_DATA_H
 #define THEINTERCEPT_DATA_H
 
+void wifi_apwep(void);
+void wifi_probe(void);
+void wifi_mac(void);
+void wifi_ap2(void);
 void wifi_ap1(void);
 
 #define CPU_HEAT_SIZE 2

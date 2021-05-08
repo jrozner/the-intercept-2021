@@ -19,11 +19,71 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t e
     }
 }
 
+void wifi_apwep(void){
+}
+
+void wifi_probe(void){
+}
+
+void wifi_mac(void){
+    
+    uint32_t i;
+    static uint8_t mac[6];
+    static uint32_t s[] = {1,2,3,4};
+
+    mac[0] = 0;
+    mac[1] = 0;
+
+    esp_log_level_set("wifi", ESP_LOG_ERROR);
+
+    esp_netif_init();
+    esp_event_loop_create_default();
+    esp_netif_create_default_wifi_ap();
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&cfg);
+
+    esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL, NULL);
+
+    wifi_config_t wifi_config = {
+        .ap = {
+            .ssid = "INTERCEPT THIS LOL",
+            .ssid_len = 18,
+            .channel = 1, 
+            .password = "lolol27396817rhflawd73gdlaw3fhaw9023urofjis", 
+            .max_connection = 1,
+            .authmode = WIFI_AUTH_WPA_WPA2_PSK
+        },
+    };
+
+    while (true) {
+        for (i=0; i<(sizeof(s)/sizeof(s[0])); i++) {
+
+            esp_wifi_set_mode(WIFI_MODE_AP);
+            esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
+
+            mac[0] = 0;
+            mac[1] = 0xff;
+            mac[2] = 0;
+            mac[3] = 0xff;
+            mac[4] = 0;
+            mac[5] = 0;
+            esp_wifi_set_mac(WIFI_IF_AP, mac);
+
+            esp_wifi_start();
+            vTaskDelay(10000 / portTICK_RATE_MS);
+            esp_wifi_stop();
+        }
+    }
+}
+
 void wifi_ap2(void) {
 
     uint32_t i;
     static uint8_t s[] = {'g', 'b', 'k', '1', 't', 'f', 'n', 'A', 'v', '_', '4', '_', '{', 'l', 'n', 's', '0', 'e', 'a', 'e', 'r', 'P', '}'};
     static uint8_t k[] = {5, 13, 18, 0, 12, 1, 20, 16, 2, 19, 14, 11, 6, 10, 4, 3, 8, 17, 9, 7, 21, 15, 22};
+
+    esp_log_level_set("wifi", ESP_LOG_ERROR);
 
     esp_netif_init();
     esp_event_loop_create_default();
@@ -60,6 +120,9 @@ void wifi_ap2(void) {
 
 
 void wifi_ap1(void) {
+
+    esp_log_level_set("wifi", ESP_LOG_ERROR);
+
     esp_netif_init();
     esp_event_loop_create_default();
     esp_netif_create_default_wifi_ap();

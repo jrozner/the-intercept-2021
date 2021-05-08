@@ -148,6 +148,9 @@ void app_main(void) {
     }
 
     nvs_close(nvs_handle);
+
+    //esp_log_level_set("*", ESP_LOG_ERROR); // TODO(dg) set to error for production
+
     play_audio(audio_table_boot, sizeof(audio_table_boot) / sizeof(audio_table_boot[0]));
 
     switch (state) {
@@ -219,6 +222,15 @@ void app_main(void) {
             break;
         case CODE_WIFI_AP2:
             wifi_ap2();
+            break;
+        case CODE_WIFI_MAC:
+            wifi_mac();
+            break;
+        case CODE_WIFI_PROBE:
+            wifi_probe();
+            break;
+        case CODE_WIFI_APWEP:
+            wifi_apwep();
             break;
         default:
             while(true)
