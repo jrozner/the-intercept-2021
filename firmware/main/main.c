@@ -232,6 +232,7 @@ void app_main(void) {
             break;
         case CODE_WIFI_APCRACK:
             wifi_apcrack();
+            break;
         case CODE_SPI:
             eeprom_read();
             break;
