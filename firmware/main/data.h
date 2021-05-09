@@ -1,9 +1,11 @@
 #ifndef THEINTERCEPT_DATA_H
 #define THEINTERCEPT_DATA_H
 
+void ble_advert(void);
+
 #define APCRACK_SIZE 9
 
-static const char *data_apcrack[] = {
+const char *data_apcrack[] = {
 "              ,      [fla]",
 "     __  _.-\"` `'-.  [g{d3]",
 "    /||\\'._ __{}_(   [f1n1]",

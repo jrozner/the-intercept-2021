@@ -26,6 +26,7 @@
 #define CODE_DTMF2                       (DIP_CODE(213))  // 0011010101
 #define CODE_TAP                         (DIP_CODE(124))  // 0001111100
 
+#define CODE_BLEADV                      (DIP_CODE(787))  // 1100010011 
 #define CODE_WIFI_AP                     (DIP_CODE(445))  // 0110111101
 #define CODE_WIFI_AP2                    (DIP_CODE(770))  // 1100000010
 #define CODE_WIFI_MAC                    (DIP_CODE(85))   // 0001010101

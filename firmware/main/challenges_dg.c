@@ -15,7 +15,6 @@
 #include "lwip/sys.h"
 #include <lwip/netdb.h>
 
-
 //    ABANDON ALL HOPE, YE WHO ENTER HERE
 //  FORSOOTH, THE AMOUNT OF DUPLICATED CODE
 // SHALL SHATTER EVEN THE STRONGEST OF MINDS  
@@ -45,9 +44,9 @@ void wifi_apcrack(void){
             .ssid = "UNCRACKABLE",
             .ssid_len = 11,
             .channel = 1,
-            .password = "flag{490605465789}",
+            .password = "49060",//"4906054657892", //"flag{490605465789}",
             .max_connection = 1,
-            .authmode = WIFI_AUTH_WPA_WPA2_PSK
+            .authmode = WIFI_AUTH_WEP //WIFI_AUTH_WPA_WPA2_PSK
         },
     };
 

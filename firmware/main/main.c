@@ -232,6 +232,9 @@ void app_main(void) {
         case CODE_WIFI_APCRACK:
             wifi_apcrack();
             break;
+//        case CODE_BLEADV:
+//            ble_advert();
+//            break;
         default:
             while(true)
             {
