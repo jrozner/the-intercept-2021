@@ -24,10 +24,7 @@
 
 #include "challenges_jk.c"
 #include "challenges_dg.c"
-<<<<<<< HEAD
-=======
 #include "challenges_joe.c"
->>>>>>> 8ea28c7 (Add eeprom read challenge)
 
 void app_main(void) {
     // gpio config for all output pins
