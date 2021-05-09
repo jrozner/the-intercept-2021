@@ -24,6 +24,10 @@
 
 #include "challenges_jk.c"
 #include "challenges_dg.c"
+<<<<<<< HEAD
+=======
+#include "challenges_joe.c"
+>>>>>>> 8ea28c7 (Add eeprom read challenge)
 
 void app_main(void) {
     // gpio config for all output pins
@@ -31,7 +35,7 @@ void app_main(void) {
         .intr_type = GPIO_INTR_DISABLE,
         .mode = GPIO_MODE_OUTPUT,
         .pin_bit_mask = GPIO_SEL_2 | GPIO_SEL_4 | GPIO_SEL_5 | GPIO_SEL_12 | GPIO_SEL_14 | GPIO_SEL_16 |
-                        GPIO_SEL_21 | GPIO_SEL_27 | GPIO_SEL_32 | GPIO_SEL_33,
+                        GPIO_SEL_21 | GPIO_SEL_22 | GPIO_SEL_27 | GPIO_SEL_32 | GPIO_SEL_33,
         .pull_down_en = 0,
         .pull_up_en = 0,
     };
@@ -231,6 +235,8 @@ void app_main(void) {
             break;
         case CODE_WIFI_APCRACK:
             wifi_apcrack();
+        case CODE_SPI:
+            eeprom_read();
             break;
         default:
             while(true)

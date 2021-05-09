@@ -27,4 +27,10 @@
 #define DIP_MISO (GPIO_NUM_13)
 #define DIP_SCLK (GPIO_NUM_15)
 
+// Flash
+#define FLASH_MISO (GPIO_NUM_19)
+#define FLASH_MOSI (GPIO_NUM_23)
+#define FLASH_SCK (GPIO_NUM_18)
+#define FLASH_CE (GPIO_NUM_22)
+
 #endif //THEINTERCEPT_PINS_H

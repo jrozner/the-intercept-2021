@@ -47,6 +47,8 @@
 #define CODE_LED_BRAILLE                 (DIP_CODE(333))  // 0101001101
 #define CODE_LED_POV                     (DIP_CODE(42))   // 0000101010
 
+#define CODE_SPI                         (DIP_CODE(432))  // 0110110000
+
 uint16_t read_state(spi_device_handle_t);
 void load_registers(spi_transaction_t *t);
 
