@@ -44,9 +44,9 @@ void wifi_apcrack(void){
             .ssid = "UNCRACKABLE",
             .ssid_len = 11,
             .channel = 1,
-            .password = "49060",//"4906054657892", //"flag{490605465789}",
+            .password = "mahalkita",
             .max_connection = 1,
-            .authmode = WIFI_AUTH_WEP //WIFI_AUTH_WPA_WPA2_PSK
+            .authmode = WIFI_AUTH_WPA_WPA2_PSK
         },
     };
 
