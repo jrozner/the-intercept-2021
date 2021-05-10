@@ -100,7 +100,7 @@ void app_main(void) {
 
     startup_animation();
     printf(main_uart_splash);
-
+/*
     esp_err_t err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         printf("erasing\n");
@@ -112,9 +112,9 @@ void app_main(void) {
     nvs_handle_t nvs_handle;
     err = nvs_open("storage", NVS_READWRITE, &nvs_handle);
     ESP_ERROR_CHECK(err);
-
+*/
     uint16_t state = read_state(dip_spi);
-
+/*
     uint8_t initialized = 0;
     err = nvs_get_u8(nvs_handle, "initialized", &initialized);
     switch (err) {
@@ -146,7 +146,7 @@ void app_main(void) {
     }
 
     nvs_close(nvs_handle);
-
+*/
     //esp_log_level_set("*", ESP_LOG_ERROR); // TODO(dg) set to error for production
 
     play_audio(audio_table_boot, sizeof(audio_table_boot) / sizeof(audio_table_boot[0]));

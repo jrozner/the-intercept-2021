@@ -1,5 +1,6 @@
 # ESP-IDF Partition Table
 # Name, Type, SubType, Offset, Size, Flags
-nvs,data,nvs,0x9000,24K,
-phy_init,data,phy,0xf000,4K,
-factory,app,factory,0x10000,3M,
+nvs,data,nvs,0xf000,24K,
+phy_init,data,phy,0x15000,4K,
+nvs_key,data,nvs_keys,0x16000,4K,
+factory,app,factory,0x20000,3M,
